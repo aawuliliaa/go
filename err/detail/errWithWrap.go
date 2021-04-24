@@ -20,7 +20,7 @@ func AddApp(app string) error {
 			CreateApp(app)
 			return nil
 		}
-		return fmt.Errorf("Get App:%s err,err is:%v ", app, err)
+		return errors.WithMessage(err,"add app failed")
 
 	}
 	return fmt.Errorf("App:%s already exist ", app)
