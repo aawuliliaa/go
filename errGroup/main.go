@@ -44,12 +44,12 @@ func main() {
 		case <-errGroupCtx.Done():
 			log.Println("g2 errGroupCtx.Done,errGroup exit")
 		case <-serverStop:
-			log.Println("server stop,errGroup exit")
+			log.Println("g2 server stop,errGroup exit")
 		}
 		timeoutCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		// 这里不是必须的，但是如果使用 _ 的话静态扫描工具会报错，加上也无伤大雅
 		defer cancel()
-		log.Println("server shutdown")
+		log.Println("g2 server shutdown")
 		return server.Shutdown(timeoutCtx)
 	})
 	//g3
@@ -62,13 +62,14 @@ func main() {
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		select {
 		case <-errGroupCtx.Done():
-			log.Println("g3 errGroupCtx.Done,errGroup exit")
+			log.Printf("g3 errGroupCtx.Done, errGroup exit, errGroupCtx.Err():%v", errGroupCtx.Err())
 			return errGroupCtx.Err()
 		case sig := <-quit:
-			return fmt.Errorf("get os signal: %v", sig)
+			log.Printf("g3 get os signal: %v", sig)
+			return fmt.Errorf("g3 get os signal: %v", sig)
 
 		}
 	})
-	fmt.Printf("errgroup exiting: %+v\n", errG.Wait())
+	fmt.Printf("main errgroup exiting: %+v\n", errG.Wait())
 
 }
