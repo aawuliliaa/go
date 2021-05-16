@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/google/wire"
 	"github.com/jinzhu/gorm"
+	_ "gorm.io/driver/mysql"
 	"project/configs"
 )
 
