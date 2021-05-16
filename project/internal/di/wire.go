@@ -5,12 +5,10 @@ package di
 
 import (
 	"github.com/google/wire"
-	"project/internal/dao"
 	"project/internal/server/grpc"
 	"project/internal/server/http"
-	"project/internal/service"
 )
-//go:generate
+//go:generate project t wire
 func InitApp() ( *App,func(), error) {
-	panic(wire.Build(dao.Provider, service.Provider, http.NewHttpServer, grpc.NewGrpcServer,NewApp))
+	panic(wire.Build( http.NewHttpServer, grpc.NewGrpcServer,NewApp))
 }

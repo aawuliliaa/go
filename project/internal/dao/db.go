@@ -6,7 +6,9 @@ import (
 	"github.com/jinzhu/gorm"
 	"project/configs"
 )
-var Provider = wire.NewSet( NewDB)
+
+var Provider = wire.NewSet(NewDB)
+
 type Dao struct {
 	db *gorm.DB
 }
@@ -24,4 +26,3 @@ func NewDB() (*Dao, func(), error) {
 		db: db,
 	}, closeFunc, nil
 }
-
