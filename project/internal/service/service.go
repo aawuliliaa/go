@@ -8,12 +8,12 @@ type Service struct {
 	GroupService     *GroupService
 	NamespaceService *NamespaceService
 }
-var AppService *Service
 
-func NewService(groupService *GroupService, namespaceService *NamespaceService)error  {
-	AppService= &Service{
+
+func NewService(groupService *GroupService, namespaceService *NamespaceService)*Service  {
+	appService:= &Service{
 		GroupService:     groupService,
 		NamespaceService: namespaceService,
 	}
-	return nil
+	return appService
 }
