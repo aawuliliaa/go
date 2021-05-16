@@ -2,15 +2,16 @@ package dao
 
 import (
 	"fmt"
+	"github.com/google/wire"
 	"github.com/jinzhu/gorm"
 	"project/configs"
 )
-
+var Provider = wire.NewSet( NewDB)
 type Dao struct {
 	db *gorm.DB
 }
 
-func New() (*Dao, func(), error) {
+func NewDB() (*Dao, func(), error) {
 	// TODO 单例封装
 	// TODO 配置Config
 	connString := configs.ProjectConfig.MysqlUrl
