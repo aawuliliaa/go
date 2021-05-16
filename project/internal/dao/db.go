@@ -19,8 +19,9 @@ func NewDB() (*Dao, func(), error) {
 	if err != nil {
 		return nil, nil, fmt.Errorf("mysql conn err,err is:%v", err)
 	}
-	cf := func() { db.Close() }
+	closeFunc := func() { db.Close() }
 	return &Dao{
 		db: db,
-	}, cf, nil
+	}, closeFunc, nil
 }
+

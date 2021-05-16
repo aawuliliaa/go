@@ -9,6 +9,8 @@ import (
 
 type Config struct {
 	MysqlUrl string `ini:"mysqlUrl"`
+	GrpcPort string `ini:"grpcPort"`
+	GrpcIp string `ini:"grpcIp"`
 }
 
 var ProjectConfig *Config
