@@ -1,5 +1,6 @@
-1、使用 redis benchmark 工具, 测试 10 20 50 100 200 1k 5k 字节 value 大小，redis get set 性能。
-```bigquery
+## 1、使用 redis benchmark 工具, 测试 10 20 50 100 200 1k 5k 字节 value 大小，redis get set 性能。
+### 1.1 10字节
+```
 dz0400819@MacBook-Pro   redis-benchmark -h 127.0.0.1 -p 6379 -q -d 10
 PING_INLINE: 121212.12 requests per second
 PING_BULK: 123609.39 requests per second
