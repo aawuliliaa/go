@@ -237,5 +237,89 @@ LRANGE_600 (first 600 elements): 481.43 requests per second
 17067:M 20 Jun 2021 12:53:52.437 * Background saving started by pid 18212
 MSET (10 keys): 27277.69 requests per second
 ```
-2、写入一定量的 kv 数据, 根据数据大小 1w-50w 自己评估, 结合写入前后的 info memory 信息  , 分析上述不同 value 大小下，平均每个 key 的占用内存空间。
+## 2、写入一定量的 kv 数据, 根据数据大小 1w-50w 自己评估, 结合写入前后的 info memory 信息  , 分析上述不同 value 大小下，平均每个 key 的占用内存空间。
+### 2.1写入10个key, 每个key的value大小为1w字节
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/garyburd/redigo/redis"
+)
+
+func main()  {
+	value1 := make([]byte,10000)
+
+	c, err := redis.Dial("tcp", "127.0.0.1:6379")
+	if err != nil {
+		fmt.Println("Connect to redis error", err)
+		return
+	}
+	defer c.Close()
+	for _,num:= range []int{1,2,3,4,5,6,7,8,9,10}{
+		key := fmt.Sprintf("var_%d",num)
+		_, err = c.Do("SET", key, string(value1))
+		if err != nil {
+			fmt.Println("redis set failed:", err)
+		}
+	}
+
+	
+}
+
+```
+```
+127.0.0.1:6379> keys *
+ 1) "var_7"
+ 2) "key:__rand_int__"
+ 3) "var_10"
+ 4) "mylist"
+ 5) "myhash"
+ 6) "var_3"
+ 7) "var_1"
+ 8) "var_4"
+ 9) "counter:__rand_int__"
+10) "var_9"
+11) "var_5"
+12) "var_8"
+13) "var_6"
+14) "var_2"
+```
+![img.png](img/img.png)
+
+每个key占用内存大小=（668193696-668091056）/10=10264(字节)
+
+### 2.2写入10个key, 每个key的value大小为10w字节
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/garyburd/redigo/redis"
+)
+
+func main()  {
+	value1 := make([]byte,100000)
+
+	c, err := redis.Dial("tcp", "127.0.0.1:6379")
+	if err != nil {
+		fmt.Println("Connect to redis error", err)
+		return
+	}
+	defer c.Close()
+	for _,num:= range []int{1,2,3,4,5,6,7,8,9,10}{
+		key := fmt.Sprintf("var10_%d",num)
+		_, err = c.Do("SET", key, string(value1))
+		if err != nil {
+			fmt.Println("redis set failed:", err)
+		}
+	}
+
+	
+}
+
+```
+![img.png](img/img10.png)
+
+每个key占用内存大小=（6669418880-6668296336）/10=112254.4(字节)
 
