@@ -1,0 +1,23 @@
+//版本号
+syntax = "proto3";
+
+//指定包名
+package proto;
+option go_package = ".;proto";
+
+message GetGroupRequest {
+    //定义用户名
+    string name = 1;
+}
+
+
+message GetGroupResponse {
+    string name= 1;
+}
+
+//service定义方法
+service GroupService {
+    rpc GetGroupInfo (GetGroupRequest) returns (GetGroupResponse) {
+    }
+
+}
